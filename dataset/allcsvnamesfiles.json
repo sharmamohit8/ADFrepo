@@ -1,0 +1,25 @@
+{
+	"name": "allcsvnamesfiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservice_storagefirst",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "all_csv.csv",
+				"folderPath": "onefile",
+				"container": "containercsv"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

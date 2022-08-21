@@ -1,0 +1,17 @@
+{
+	"name": "copyallot",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Allotments"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

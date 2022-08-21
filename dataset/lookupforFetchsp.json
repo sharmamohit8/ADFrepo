@@ -1,0 +1,16 @@
+{
+	"name": "lookupforFetchsp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": ""
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,9 @@
+{
+	"name": "ADFFirstMohit",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "72a3841e-5158-4b1c-bf69-13dbb47b019b",
+		"tenantId": "3b36756f-3b92-48da-83c7-b657994e8743"
+	}
+}
