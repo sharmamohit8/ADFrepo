@@ -1,17 +1,17 @@
 {
-	"name": "t3SSMSoutputinstg",
+	"name": "FinaltaskCSVinStg",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Linkedservice_SqlServer",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"fileName": {
+			"filename": {
 				"type": "string"
 			}
 		},
 		"folder": {
-			"name": "CTtask3datasets"
+			"name": "CTFinalTAsk"
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
@@ -19,10 +19,9 @@
 		"typeProperties": {
 			"schema": "stg",
 			"table": {
-				"value": "@dataset().fileName",
+				"value": "@dataset().filename",
 				"type": "Expression"
 			}
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

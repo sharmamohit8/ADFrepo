@@ -1,19 +1,28 @@
 {
-	"name": "task3Lookup1IP",
+	"name": "FinalTaskCSVcopy",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "linkedservice_storagefirst",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
 		"folder": {
-			"name": "CTtask3datasets"
+			"name": "CTFinalTAsk"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "task3lookupIP.csv",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": "CTFinalTask",
 				"container": "containercsv"
 			},
 			"columnDelimiter": ",",
@@ -22,6 +31,5 @@
 			"quoteChar": "\""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

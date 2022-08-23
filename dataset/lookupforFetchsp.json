@@ -5,6 +5,9 @@
 			"referenceName": "Linkedservice_SqlServer",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "CTtask3datasets"
+		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": [],
