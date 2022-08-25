@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADFFirstMohit"
+		},
+		"Linkedservice_SqlServer_connectionString": {
+			"value": ""
+		},
+		"Linkedservice_SqlServer_password": {
+			"value": ""
+		},
+		"SqlSever1_connectionString": {
+			"value": ""
+		},
+		"TestSqlServer_connectionString": {
+			"value": ""
+		},
+		"linkedservice_storagefirst_connectionString": {
+			"value": ""
+		},
+		"Linkedservice_SqlServer_properties_typeProperties_userName": {
+			"value": "DESKTOP-Q7URFLJ\\mohit"
+		}
+	}
+}

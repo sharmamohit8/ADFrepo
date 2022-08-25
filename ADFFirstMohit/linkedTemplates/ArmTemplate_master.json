@@ -1,0 +1,104 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ADFFirstMohit"
+		},
+		"Linkedservice_SqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Linkedservice_SqlServer'"
+		},
+		"Linkedservice_SqlServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Linkedservice_SqlServer'"
+		},
+		"SqlSever1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlSever1'"
+		},
+		"TestSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'TestSqlServer'"
+		},
+		"linkedservice_storagefirst_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedservice_storagefirst'"
+		},
+		"Linkedservice_SqlServer_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "DESKTOP-Q7URFLJ\\mohit"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ADFFirstMohit_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"SqlSever1_connectionString": {
+						"value": "[parameters('SqlSever1_connectionString')]"
+					},
+					"TestSqlServer_connectionString": {
+						"value": "[parameters('TestSqlServer_connectionString')]"
+					},
+					"linkedservice_storagefirst_connectionString": {
+						"value": "[parameters('linkedservice_storagefirst_connectionString')]"
+					},
+					"Linkedservice_SqlServer_connectionString": {
+						"value": "[parameters('Linkedservice_SqlServer_connectionString')]"
+					},
+					"Linkedservice_SqlServer_password": {
+						"value": "[parameters('Linkedservice_SqlServer_password')]"
+					},
+					"Linkedservice_SqlServer_properties_typeProperties_userName": {
+						"value": "[parameters('Linkedservice_SqlServer_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ADFFirstMohit_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADFFirstMohit_ArmTemplate_0')]"
+			]
+		}
+	]
+}
