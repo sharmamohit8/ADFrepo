@@ -1,0 +1,15 @@
+{
+	"name": "FinalTaskfetchspLookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "CTFinalTAsk"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
