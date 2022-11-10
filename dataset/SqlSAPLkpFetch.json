@@ -1,0 +1,60 @@
+{
+	"name": "SqlSAPLkpFetch",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Table Name",
+				"type": "varchar"
+			},
+			{
+				"name": "Table Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Staging Schema",
+				"type": "varchar"
+			},
+			{
+				"name": "Final Schema",
+				"type": "varchar"
+			},
+			{
+				"name": "Sink Table",
+				"type": "varchar"
+			},
+			{
+				"name": "Load Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Delta condition",
+				"type": "varchar"
+			},
+			{
+				"name": "LastRefreshDate",
+				"type": "date"
+			},
+			{
+				"name": "Executed flag",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SAPlookup"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

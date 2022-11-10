@@ -1,15 +1,12 @@
 {
-	"name": "FinalTaskfetchspLookup",
+	"name": "resrtapiemp",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Linkedservice_SqlServer",
+			"referenceName": "RestService1",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "CTFinalTAsk"
-		},
 		"annotations": [],
-		"type": "SqlServerTable",
+		"type": "RestResource",
 		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

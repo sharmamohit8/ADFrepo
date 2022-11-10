@@ -1,25 +1,28 @@
 {
-	"name": "FinaltaskCSVinStg",
+	"name": "SAPstgsink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Linkedservice_SqlServer",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filename": {
+			"TableName": {
+				"type": "string"
+			},
+			"StagingSchema": {
 				"type": "string"
 			}
-		},
-		"folder": {
-			"name": "CTFinalTAsk"
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "stg",
+			"schema": {
+				"value": "@dataset().StagingSchema",
+				"type": "Expression"
+			},
 			"table": {
-				"value": "@dataset().filename",
+				"value": "@dataset().TableName",
 				"type": "Expression"
 			}
 		}

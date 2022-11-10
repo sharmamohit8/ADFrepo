@@ -1,27 +1,28 @@
 {
-	"name": "CTFInalTaskCsvLookupIP",
+	"name": "outputofwebact",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "linkedservice_storagefirst",
+			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "CTFinalTAsk"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": "allfilesofFinalTask.csv",
-				"container": "containercsv"
+				"type": "AzureBlobFSLocation",
+				"fileName": "template.txt",
+				"fileSystem": "forct"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
-			"firstRowAsHeader": true,
+			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

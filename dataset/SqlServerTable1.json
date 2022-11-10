@@ -1,16 +1,17 @@
 {
-	"name": "FinalTaskfetchspLookup",
+	"name": "SqlServerTable1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Linkedservice_SqlServer",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "CTFinalTAsk"
-		},
 		"annotations": [],
 		"type": "SqlServerTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "RESTemployee"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

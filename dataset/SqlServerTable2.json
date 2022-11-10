@@ -1,12 +1,9 @@
 {
-	"name": "FinalTaskfetchspLookup",
+	"name": "SqlServerTable2",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Linkedservice_SqlServer",
+			"referenceName": "linkedservicefordb",
 			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "CTFinalTAsk"
 		},
 		"annotations": [],
 		"type": "SqlServerTable",

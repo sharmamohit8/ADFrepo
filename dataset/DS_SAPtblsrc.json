@@ -1,25 +1,21 @@
 {
-	"name": "FinaltaskCSVinStg",
+	"name": "DS_SAPtblsrc",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Linkedservice_SqlServer",
+			"referenceName": "LS_SAPTable",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"filename": {
+			"TableName": {
 				"type": "string"
 			}
 		},
-		"folder": {
-			"name": "CTFinalTAsk"
-		},
 		"annotations": [],
-		"type": "SqlServerTable",
+		"type": "SapTableResource",
 		"schema": [],
 		"typeProperties": {
-			"schema": "stg",
-			"table": {
-				"value": "@dataset().filename",
+			"tableName": {
+				"value": "@dataset().TableName",
 				"type": "Expression"
 			}
 		}

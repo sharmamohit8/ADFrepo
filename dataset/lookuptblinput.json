@@ -1,0 +1,48 @@
+{
+	"name": "lookuptblinput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "scdtype1"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SourceSchemaName",
+				"type": "varchar"
+			},
+			{
+				"name": "SourceTableName",
+				"type": "varchar"
+			},
+			{
+				"name": "SinkSchemaName",
+				"type": "varchar"
+			},
+			{
+				"name": "SinkTableName",
+				"type": "varchar"
+			},
+			{
+				"name": "LastRefresheDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Lookuptable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

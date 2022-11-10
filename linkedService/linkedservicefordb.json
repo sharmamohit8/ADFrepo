@@ -1,0 +1,18 @@
+{
+	"name": "linkedservicefordb",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "foradventure database",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=MOHIT_SHARMA\\SQLEXPRESS;initial catalog=AdventureWorks2019",
+			"userName": "MOHIT_SHARMA\\mohit",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZjYzODc4MC1mNGZmLTQxZTctYjQwOS1iZDIzNWUyOWFmMTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfhHosted-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

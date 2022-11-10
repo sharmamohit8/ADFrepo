@@ -5,9 +5,9 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "integrated security=True;data source=DESKTOP-Q7URFLJ\\SQLEXPRESS;initial catalog=Practice",
-			"userName": "DESKTOP-Q7URFLJ\\mohit",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIzNmVhZjg2My1hOTk2LTQ5YjMtYWQ1My00NTIxMDEyNDM0ZWYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": "integrated security=True;data source=MOHIT_SHARMA\\SQLEXPRESS;initial catalog=forADF",
+			"userName": "MOHIT_SHARMA\\mohit",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwZTQ4Y2Y0NS03NzBjLTRmOGYtYjE3OC1jNjAzNWUwMmI1YWUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "SelfhHosted-IR",

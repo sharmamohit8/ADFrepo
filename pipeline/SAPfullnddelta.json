@@ -1,0 +1,71 @@
+{
+	"name": "SAPfullnddelta",
+	"properties": {
+		"activities": [
+			{
+				"name": "SV_Mastertime",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Time",
+					"value": {
+						"value": "@pipeline().TriggerTime",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "EX_full load",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SV_Mastertime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Full load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "EX_delta load",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SV_Mastertime",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Delta load",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"variables": {
+			"Time": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "SAP pipeline flow"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-11-08T09:44:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

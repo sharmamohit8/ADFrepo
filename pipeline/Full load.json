@@ -1,13 +1,13 @@
 {
-	"name": "CTFilnalTaskinSSMS",
+	"name": "Full load",
 	"properties": {
 		"activities": [
 			{
-				"name": "FinaltaskCSVlookup",
+				"name": "LK_table",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "7.00:00:00",
+					"timeout": "0.12:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -16,29 +16,24 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select * from SAPlookup where LoadType = 'Full'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "CTFInalTaskCsvLookupIP",
+						"referenceName": "SqlSAPLkpFetch",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
 			},
 			{
-				"name": "ForEachFinalTaskfiles",
+				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "FinaltaskCSVlookup",
+						"activity": "LK_table",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -47,17 +42,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('FinaltaskCSVlookup').output.value",
+						"value": "@activity('LK_table').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "CopyCsvtoStginSSMS",
+							"name": "CP_srctostg",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "7.00:00:00",
+								"timeout": "0.12:00:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
@@ -66,15 +61,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
+									"type": "SapTableSource",
+									"rfcTableOptions": "",
+									"customRfcReadTableFunctionModule": "",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "SqlServerSink",
@@ -94,11 +84,11 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "FinalTaskCSVcopy",
+									"referenceName": "DS_SAPtblsrc",
 									"type": "DatasetReference",
 									"parameters": {
-										"filename": {
-											"value": "@item().filename",
+										"TableName": {
+											"value": "@item().TableName",
 											"type": "Expression"
 										}
 									}
@@ -106,11 +96,15 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "FinaltaskCSVinStg",
+									"referenceName": "SAPstgsink",
 									"type": "DatasetReference",
 									"parameters": {
-										"filename": {
-											"value": "@replace(item().filename,'.csv','')",
+										"TableName": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
+										"StagingSchema": {
+											"value": "@item().StagingSchema",
 											"type": "Expression"
 										}
 									}
@@ -119,30 +113,13 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Execute Pipeline1",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "ForEachFinalTaskfiles",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "CTfinaltaskOutput",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
+		"folder": {
+			"name": "SAP pipeline flow"
+		},
 		"annotations": [],
-		"lastPublishTime": "2022-08-25T18:15:28Z"
+		"lastPublishTime": "2022-11-09T07:46:52Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
