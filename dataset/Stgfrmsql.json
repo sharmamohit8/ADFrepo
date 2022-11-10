@@ -1,0 +1,12 @@
+{
+	"name": "Stgfrmsql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_SqlServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
