@@ -110,7 +110,7 @@
 											"value": "@item().TableName",
 											"type": "Expression"
 										},
-										"StagingSchema": {
+										"SinkSchema": {
 											"value": "@item().StagingSchema",
 											"type": "Expression"
 										}
