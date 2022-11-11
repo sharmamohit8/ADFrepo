@@ -1,5 +1,5 @@
 {
-	"name": "SAPsink",
+	"name": "SAPfetchndsink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Linkedservice_SqlServer",

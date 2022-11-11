@@ -48,7 +48,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "CD_Srctostg",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -103,7 +103,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SAPsink",
+									"referenceName": "SAPfetchndsink",
 									"type": "DatasetReference",
 									"parameters": {
 										"SinkSchema": {
@@ -115,11 +115,11 @@
 							]
 						},
 						{
-							"name": "Stored procedure1",
+							"name": "SP_DeltaLoad",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "CD_Srctostg",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -135,13 +135,33 @@
 							"userProperties": []
 						},
 						{
-							"name": "Stored procedure2",
+							"name": "SP_auditStg",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "CD_Srctostg",
 									"dependencyConditions": [
 										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						},
+						{
+							"name": "SP_auditdbo",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "SP_DeltaLoad",
+									"dependencyConditions": [
+										"Succeeded"
 									]
 								}
 							],

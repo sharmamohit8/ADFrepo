@@ -100,7 +100,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SAPsink",
+									"referenceName": "SAPfetchndsink",
 									"type": "DatasetReference",
 									"parameters": {
 										"SinkSchema": {
