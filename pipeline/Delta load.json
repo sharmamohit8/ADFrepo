@@ -72,7 +72,7 @@
 								"sink": {
 									"type": "SqlServerSink",
 									"preCopyScript": {
-										"value": "@{concat('TRUNCATE TABLE b_', item().StagingSchema.TableName)}",
+										"value": "@{concat('If object_id(''',item().StagingSchema.TableName,''') \nbegin ''truncate table'',''item().StagingSchema.TableName'',\nend')}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
@@ -303,6 +303,14 @@
 				}
 			}
 		],
+		"variables": {
+			"rowsRead": {
+				"type": "String"
+			},
+			"rowscopy": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "SAP pipeline flow"
 		},
