@@ -106,7 +106,7 @@
 									"referenceName": "SAPfetchndsink",
 									"type": "DatasetReference",
 									"parameters": {
-										"SinkSchema": {
+										"Schema": {
 											"value": "@item().StagingSchema",
 											"type": "Expression"
 										},
@@ -165,7 +165,57 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[auditlog]"
+								"storedProcedureName": "[dbo].[auditlog]",
+								"storedProcedureParameters": {
+									"Destination": {
+										"value": "",
+										"type": "String"
+									},
+									"Message": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineName": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": "",
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": "",
+										"type": "String"
+									},
+									"RowsRead": {
+										"value": "",
+										"type": "String"
+									},
+									"SinkSchema": {
+										"value": "",
+										"type": "String"
+									},
+									"SinkTable": {
+										"value": "",
+										"type": "String"
+									},
+									"Source": {
+										"value": "",
+										"type": "String"
+									},
+									"Sourcetable": {
+										"value": "",
+										"type": "String"
+									},
+									"Status": {
+										"value": "",
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "Linkedservice_SqlServer",
@@ -179,7 +229,7 @@
 								{
 									"activity": "SP_DeltaLoad",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
@@ -192,7 +242,57 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[auditlog]"
+								"storedProcedureName": "[dbo].[auditlog]",
+								"storedProcedureParameters": {
+									"Destination": {
+										"value": "",
+										"type": "String"
+									},
+									"Message": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineName": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": "",
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": "",
+										"type": "String"
+									},
+									"RowsRead": {
+										"value": "",
+										"type": "String"
+									},
+									"SinkSchema": {
+										"value": "",
+										"type": "String"
+									},
+									"SinkTable": {
+										"value": "",
+										"type": "String"
+									},
+									"Source": {
+										"value": "",
+										"type": "String"
+									},
+									"Sourcetable": {
+										"value": "",
+										"type": "String"
+									},
+									"Status": {
+										"value": "",
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "Linkedservice_SqlServer",

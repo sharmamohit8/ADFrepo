@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"SinkSchema": {
+			"Schema": {
 				"type": "string"
 			},
 			"TableName": {
@@ -18,7 +18,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": {
-				"value": "@dataset().SinkSchema",
+				"value": "@dataset().Schema",
 				"type": "Expression"
 			},
 			"table": {
