@@ -1,15 +1,15 @@
 {
-	"name": "SAPstgsink",
+	"name": "SAPsink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Linkedservice_SqlServer",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"TableName": {
+			"SinkSchema": {
 				"type": "string"
 			},
-			"SinkSchema": {
+			"TableName": {
 				"type": "string"
 			}
 		},

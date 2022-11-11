@@ -48,7 +48,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "CP_srctostg",
+							"name": "CD_srctostg",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -100,13 +100,9 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SAPstgsink",
+									"referenceName": "SAPsink",
 									"type": "DatasetReference",
 									"parameters": {
-										"TableName": {
-											"value": "@item().TableName",
-											"type": "Expression"
-										},
 										"SinkSchema": {
 											"value": "@item().StagingSchema",
 											"type": "Expression"
@@ -120,7 +116,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "CP_srctostg",
+									"activity": "CD_srctostg",
 									"dependencyConditions": [
 										"Completed"
 									]
@@ -143,7 +139,7 @@
 							}
 						},
 						{
-							"name": "Copy data1",
+							"name": "CD_stgtodbo",
 							"type": "Copy",
 							"dependsOn": [
 								{
@@ -187,13 +183,13 @@
 							]
 						},
 						{
-							"name": "Stored procedure1",
+							"name": "SP_Auditdbo",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "CD_stgtodbo",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
