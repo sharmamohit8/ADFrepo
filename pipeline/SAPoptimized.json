@@ -21,6 +21,87 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"ifFalseActivities": [
+						{
+							"name": "SrctoStg",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"enableStaging": false
+							}
+						},
+						{
+							"name": "SP_Auditlogstg",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "SrctoStg",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						},
+						{
+							"name": "SP_auditlogdbo",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data2",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
+						},
+						{
+							"name": "Copy data2",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "SP_Auditlogstg",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"enableStaging": false
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "Copy data1",
