@@ -106,6 +106,10 @@
 										"SinkSchema": {
 											"value": "@item().StagingSchema",
 											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().TableName",
+											"type": "Expression"
 										}
 									}
 								}
@@ -163,19 +167,40 @@
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "Stgfrmsql",
+									"referenceName": "SAPfetchndsink",
 									"type": "DatasetReference",
 									"parameters": {
+										"SinkSchema": {
+											"value": "@item().StagingSchema",
+											"type": "Expression"
+										},
 										"TableName": {
 											"value": "@item().TableName",
 											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SAPfetchndsink",
+									"type": "DatasetReference",
+									"parameters": {
+										"SinkSchema": {
+											"value": "@item().FinalSchema",
+											"type": "Expression"
 										},
-										"StagingSchema": {
-											"value": "@item().StagingSchema",
+										"TableName": {
+											"value": "@item().TableName",
 											"type": "Expression"
 										}
 									}
