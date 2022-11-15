@@ -52,7 +52,13 @@
 						"referenceName": "Delta load",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"time": {
+							"value": "@variables('Time')",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
