@@ -1,0 +1,60 @@
+{
+	"name": "pipeline5",
+	"properties": {
+		"activities": [
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "Linkedservice_SqlServer",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "TableName",
+									"type": "String",
+									"value": null,
+									"direction": "Input"
+								},
+								{
+									"name": "PipelineTriggerTime",
+									"type": "Datetime",
+									"value": null,
+									"direction": "Input"
+								},
+								{
+									"name": "rowsRead",
+									"type": "Int64",
+									"value": null,
+									"direction": "Output"
+								},
+								{
+									"name": "rowsCopied",
+									"type": "Int64",
+									"value": null,
+									"direction": "Output"
+								}
+							],
+							"type": "Query",
+							"text": "exec deltaSAP @SourceTable = @TableName,@PipelineTime = @PipelineTriggerTime, @rowscount = @rowsRead output,@rowswrite = @rowsCopied output"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"annotations": []
+	}
+}

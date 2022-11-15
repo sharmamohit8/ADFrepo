@@ -148,7 +148,10 @@
 										"type": "String"
 									},
 									"Message": {
-										"value": "",
+										"value": {
+											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'''Succeeded'',))",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineName": {
@@ -174,14 +177,14 @@
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@activity('CD_Srctostg').output.rowsCopied",
+											"value": "@{activity('CD_Srctostg').output.rowsCopied}",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@activity('CD_Srctostg').output.rowsRead\r\n",
+											"value": "@{activity('CD_Srctostg').output.rowsRead}\n",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -201,7 +204,10 @@
 										"type": "String"
 									},
 									"Source": {
-										"value": "SAP",
+										"value": {
+											"value": "@{activity('CD_Srctostg').output.executionDetails[0].source.type}",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Sourcetable": {
@@ -213,7 +219,7 @@
 									},
 									"Status": {
 										"value": {
-											"value": "@activity('CD_Srctostg').output.status",
+											"value": "@{activity('CD_Srctostg').output.executionDetails[0].status}\n",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -248,7 +254,10 @@
 								"storedProcedureName": "[dbo].[auditlog]",
 								"storedProcedureParameters": {
 									"Destination": {
-										"value": "",
+										"value": {
+											"value": "@item().FinalSchema",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Message": {
@@ -256,43 +265,70 @@
 										"type": "String"
 									},
 									"PipelineName": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineRunId": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineTriggerTime": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"RowsCopied": {
-										"value": "",
+										"value": {
+											"value": "@activity('Script1').output.outputparameters.rowsCopied",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"RowsRead": {
-										"value": "",
+										"value": {
+											"value": "@activity('Script1').output.outputparameters.rowsRead",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkSchema": {
-										"value": "",
+										"value": {
+											"value": "@item().FinalSchema",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkTable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Source": {
-										"value": "",
+										"value": "SAP",
 										"type": "String"
 									},
 									"Sourcetable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Status": {
-										"value": "",
+										"value": {
+											"value": "@activity('Script1').output.executionDetails.status",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
