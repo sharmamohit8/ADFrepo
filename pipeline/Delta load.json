@@ -72,7 +72,7 @@
 								"sink": {
 									"type": "SqlServerSink",
 									"preCopyScript": {
-										"value": "@{concat('If object_id(''',item().StagingSchema.TableName,''') \nbegin ''truncate table'',''item().StagingSchema.TableName'',\nend')}",
+										"value": "@{concat('If object_id(''',item().StagingSchema.TableName,''') \nbegin ''truncate table''',item().StagingSchema.TableName,'''\nend')}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
@@ -141,7 +141,10 @@
 								"storedProcedureName": "[dbo].[auditlog]",
 								"storedProcedureParameters": {
 									"Destination": {
-										"value": "",
+										"value": {
+											"value": "@item().StagingSchema",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Message": {
@@ -149,43 +152,70 @@
 										"type": "String"
 									},
 									"PipelineName": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineRunId": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineTriggerTime": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().parameters.time",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"RowsCopied": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_Srctostg').output.rowsCopied",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"RowsRead": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_Srctostg').output.rowsRead\r\n",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkSchema": {
-										"value": "",
+										"value": {
+											"value": "@item().StagingSchema",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkTable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Source": {
-										"value": "",
+										"value": "SAP",
 										"type": "String"
 									},
 									"Sourcetable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Status": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_Srctostg').output.status",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
@@ -302,21 +332,36 @@
 											{
 												"name": "readRows",
 												"type": "Int64",
-												"value": "",
+												"value": null,
 												"direction": "Output"
 											},
 											{
 												"name": "rowsCopied",
 												"type": "Int64",
-												"value": "",
+												"value": null,
 												"direction": "Output"
+											},
+											{
+												"name": "PipelineTriggerTime",
+												"type": "String",
+												"value": {
+													"value": "@pipeline().parameters.time",
+													"type": "Expression"
+												},
+												"direction": "Input"
+											},
+											{
+												"name": "TableName",
+												"type": "String",
+												"value": {
+													"value": "@item().TableName",
+													"type": "Expression"
+												},
+												"direction": "Input"
 											}
 										],
 										"type": "Query",
-										"text": {
-											"value": "@concat ('execute deltaSAP ''',item().TableName,'''',pipeline().parameters.time,'''', )",
-											"type": "Expression"
-										}
+										"text": "exec deltaSAP @SourceTable=@TableName,@PipelineTime=@PipelineTriggerTime,@rowscount =@rowsRead output,@rowswrite = @rowsCopied output"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
