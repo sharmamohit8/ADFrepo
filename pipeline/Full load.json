@@ -139,7 +139,7 @@
 								"storedProcedureParameters": {
 									"Destination": {
 										"value": {
-											"value": "@{activity('CD_srctostg').output.executionDetails[0].sink.type}",
+											"value": "@item().StagingSchema",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -166,6 +166,10 @@
 										"type": "String"
 									},
 									"PipelineTriggerTime": {
+										"value": {
+											"value": "@pipeline().parameters.ftime",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"RowsCopied": {
@@ -313,7 +317,7 @@
 								"storedProcedureParameters": {
 									"Destination": {
 										"value": {
-											"value": "@{activity('CD_stgtodbo').output.executionDetails[0].sink.type}",
+											"value": "@item().FinalSchema",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -341,7 +345,7 @@
 									},
 									"PipelineTriggerTime": {
 										"value": {
-											"value": "@pipeline().TriggerTime",
+											"value": "@pipeline().parameters.ftime",
 											"type": "Expression"
 										},
 										"type": "DateTime"
@@ -406,6 +410,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"ftime": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "SAP pipeline flow"
 		},

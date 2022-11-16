@@ -32,7 +32,13 @@
 						"referenceName": "Full load",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"ftime": {
+							"value": "@variables('Time')",
+							"type": "Expression"
+						}
+					}
 				}
 			},
 			{
@@ -64,6 +70,9 @@
 		],
 		"variables": {
 			"Time": {
+				"type": "String"
+			},
+			"fail": {
 				"type": "String"
 			}
 		},

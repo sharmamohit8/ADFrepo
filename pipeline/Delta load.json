@@ -289,7 +289,7 @@
 									},
 									"PipelineTriggerTime": {
 										"value": {
-											"value": "@pipeline().TriggerTime",
+											"value": "@pipeline().parameters.time",
 											"type": "Expression"
 										},
 										"type": "DateTime"
