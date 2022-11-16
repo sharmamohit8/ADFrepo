@@ -138,27 +138,48 @@
 								"storedProcedureName": "[dbo].[auditlog]",
 								"storedProcedureParameters": {
 									"Destination": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_srctostg').output.executionDetails[0].sink.type}",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Message": {
+										"value": {
+											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_Srctostg').output.errors[0].message)",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineRunId": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineTriggerTime": {
 										"type": "DateTime"
 									},
 									"RowsCopied": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_srctostg').output.rowsCopied",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"RowsRead": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_srctostg').output.rowsRead",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"SinkSchema": {
@@ -169,19 +190,31 @@
 										"type": "String"
 									},
 									"SinkTable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Source": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_srctostg').output.executionDetails[0].source.type}",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Sourcetable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Status": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_srctostg').output.executionDetails[0].status}",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
@@ -279,51 +312,87 @@
 								"storedProcedureName": "[dbo].[auditlog]",
 								"storedProcedureParameters": {
 									"Destination": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_stgtodbo').output.executionDetails[0].sink.type}",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Message": {
-										"value": "",
+										"value": {
+											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_Srctostg').output.errors[0].message)",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineName": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineRunId": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineTriggerTime": {
-										"value": "",
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
 										"type": "DateTime"
 									},
 									"RowsCopied": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_stgtodbo').output.rowsCopied\r\n",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"RowsRead": {
-										"value": "",
+										"value": {
+											"value": "@activity('CD_stgtodbo').output.rowsRead",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkSchema": {
-										"value": "",
+										"value": {
+											"value": "@item().FinalSchema",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SinkTable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Source": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_stgtodbo').output.executionDetails[0].source.type}",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Sourcetable": {
-										"value": "",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"Status": {
-										"value": "",
+										"value": {
+											"value": "@{activity('CD_stgtodbo').output.executionDetails[0].status}",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
