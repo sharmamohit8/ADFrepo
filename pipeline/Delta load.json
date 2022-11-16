@@ -142,14 +142,14 @@
 								"storedProcedureParameters": {
 									"Destination": {
 										"value": {
-											"value": "@item().StagingSchema",
+											"value": "'@{activity('CD_Srctostg').output.executionDetails[0].sink.type}",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"Message": {
 										"value": {
-											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'''Succeeded'',))",
+											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_Srctostg').output.errors[0].message)",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -240,6 +240,12 @@
 									"dependencyConditions": [
 										"Completed"
 									]
+								},
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"policy": {
@@ -261,7 +267,10 @@
 										"type": "String"
 									},
 									"Message": {
-										"value": "",
+										"value": {
+											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',variables('fail'))",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"PipelineName": {
@@ -402,6 +411,26 @@
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Script1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "fail",
+								"value": {
+									"value": "@activity('Script1').output",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -410,6 +439,11 @@
 		"parameters": {
 			"time": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"fail": {
+				"type": "String"
 			}
 		},
 		"folder": {
