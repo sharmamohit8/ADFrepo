@@ -163,7 +163,7 @@
 									},
 									"PipelineRunId": {
 										"value": {
-											"value": "@pipeline().RunId",
+											"value": "@pipeline().parameters.MaiinRunId",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -240,12 +240,6 @@
 									"dependencyConditions": [
 										"Completed"
 									]
-								},
-								{
-									"activity": "Set variable1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"policy": {
@@ -268,7 +262,7 @@
 									},
 									"Message": {
 										"value": {
-											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',variables('fail'))",
+											"value": "@if(equals(activity('Script1').output.executionDetails[0].status,'Succeeded'),'Success',activity('Script1').output.errors.message)",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -282,7 +276,7 @@
 									},
 									"PipelineRunId": {
 										"value": {
-											"value": "@pipeline().RunId",
+											"value": "@pipeline().parameters.MaiinRunId",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -411,26 +405,6 @@
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
-						},
-						{
-							"name": "Set variable1",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Script1",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "fail",
-								"value": {
-									"value": "@activity('Script1').output",
-									"type": "Expression"
-								}
-							}
 						}
 					]
 				}
@@ -439,10 +413,19 @@
 		"parameters": {
 			"time": {
 				"type": "string"
+			},
+			"MaiinRunId": {
+				"type": "string"
 			}
 		},
 		"variables": {
 			"fail": {
+				"type": "String"
+			},
+			"runidmst": {
+				"type": "String"
+			},
+			"syntax": {
 				"type": "String"
 			}
 		},

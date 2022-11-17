@@ -8,7 +8,7 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Time",
+					"variableName": "mastertime",
 					"value": {
 						"value": "@pipeline().TriggerTime",
 						"type": "Expression"
@@ -24,6 +24,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "SV_MasterRunId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"userProperties": [],
@@ -34,8 +40,12 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"ftime": {
-							"value": "@variables('Time')",
+						"MainPipelinetime": {
+							"value": "@variables('mastertime')",
+							"type": "Expression"
+						},
+						"MainRunId": {
+							"value": "@variables('runidmst')",
 							"type": "Expression"
 						}
 					}
@@ -50,6 +60,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "SV_MasterRunId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"userProperties": [],
@@ -61,18 +77,38 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"time": {
-							"value": "@variables('Time')",
+							"value": "@variables('mastertime')",
+							"type": "Expression"
+						},
+						"MaiinRunId": {
+							"value": "@variables('runidmst')",
 							"type": "Expression"
 						}
+					}
+				}
+			},
+			{
+				"name": "SV_MasterRunId",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "runidmst",
+					"value": {
+						"value": "@pipeline().RunId",
+						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
-			"Time": {
+			"mastertime": {
 				"type": "String"
 			},
-			"fail": {
+			"runidmst": {
+				"type": "String"
+			},
+			"syntax": {
 				"type": "String"
 			}
 		},

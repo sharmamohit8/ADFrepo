@@ -1,0 +1,36 @@
+{
+	"name": "pipeline6",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "syntax",
+					"value": {
+						"value": "@{concat('If object_id(''',pipeline().parameters.sch,'.',pipeline().parameters.tbl,\n''')is not null \nbegin truncate table''',pipeline().parameters.sch,'.',pipeline().parameters.tbl,'\nend')}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"sch": {
+				"type": "string",
+				"defaultValue": "stg"
+			},
+			"tbl": {
+				"type": "string",
+				"defaultValue": "VBAK"
+			}
+		},
+		"variables": {
+			"syntax": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
