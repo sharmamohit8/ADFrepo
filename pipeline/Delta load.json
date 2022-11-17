@@ -369,7 +369,7 @@
 									{
 										"parameters": [
 											{
-												"name": "readRows",
+												"name": "rowsRead",
 												"type": "Int64",
 												"value": null,
 												"direction": "Output"
