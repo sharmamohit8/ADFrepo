@@ -233,7 +233,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "SP_Auditstg",
+									"activity": "CD_srctostg",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -256,7 +256,8 @@
 								"sink": {
 									"type": "SqlServerSink",
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate"
 								},
 								"enableStaging": false
 							},
