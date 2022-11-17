@@ -142,7 +142,7 @@
 								"storedProcedureParameters": {
 									"Destination": {
 										"value": {
-											"value": "'@{activity('CD_Srctostg').output.executionDetails[0].sink.type}",
+											"value": "@{activity('CD_Srctostg').output.executionDetails[0].sink.type}",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -177,14 +177,14 @@
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@{activity('CD_Srctostg').output.rowsCopied}",
+											"value": "@{int(activity('CD_Srctostg').output.rowsCopied)}",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@{activity('CD_Srctostg').output.rowsRead}\n",
+											"value": "@{int(activity('CD_Srctostg').output.rowsRead)}\n",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -262,7 +262,7 @@
 									},
 									"Message": {
 										"value": {
-											"value": "@if(equals(activity('Script1').output.executionDetails[0].status,'Succeeded'),'Success',activity('Script1').output.errors.message)",
+											"value": "@if(equals(activity('Script1').output.pipelineReturnValue.status,'Succeeded'),'Success',activity('Script1').output.errors.message)",
 											"type": "Expression"
 										},
 										"type": "String"
