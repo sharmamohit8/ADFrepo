@@ -356,14 +356,14 @@
 											"value": "@activity('CD_stgtodbo').output.rowsCopied\r\n",
 											"type": "Expression"
 										},
-										"type": "String"
+										"type": "Int64"
 									},
 									"RowsRead": {
 										"value": {
 											"value": "@activity('CD_stgtodbo').output.rowsRead",
 											"type": "Expression"
 										},
-										"type": "String"
+										"type": "Int64"
 									},
 									"SinkSchema": {
 										"value": {

@@ -177,17 +177,17 @@
 									},
 									"RowsCopied": {
 										"value": {
-											"value": "@{int(activity('CD_Srctostg').output.rowsCopied)}",
+											"value": "@activity('CD_Srctostg').output.rowsCopied",
 											"type": "Expression"
 										},
-										"type": "String"
+										"type": "Int64"
 									},
 									"RowsRead": {
 										"value": {
-											"value": "@{int(activity('CD_Srctostg').output.rowsRead)}\n",
+											"value": "@activity('CD_Srctostg').output.rowsRead\n",
 											"type": "Expression"
 										},
-										"type": "String"
+										"type": "Int64"
 									},
 									"SinkSchema": {
 										"value": {
@@ -329,7 +329,7 @@
 									},
 									"Status": {
 										"value": {
-											"value": "@activity('Script1').output.executionDetails.status",
+											"value": "@activity('Script1').output.status",
 											"type": "Expression"
 										},
 										"type": "String"
