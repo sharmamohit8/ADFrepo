@@ -72,7 +72,7 @@
 								"sink": {
 									"type": "SqlServerSink",
 									"preCopyScript": {
-										"value": "@{concat('If object_id(''',item().StagingSchema.TableName,''') \nbegin ''truncate table''',item().StagingSchema.TableName,'''\nend')}",
+										"value": "@{concat('If object_id(''',item().StagingSchema,'.',item().TableName,\n''')is not null \nbegin truncate table ',item().StagingSchema,'.',item().TableName,'\nend')}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
