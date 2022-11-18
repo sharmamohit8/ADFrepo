@@ -24,12 +24,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "SV_MasterRunId",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"userProperties": [],
@@ -45,7 +39,7 @@
 							"type": "Expression"
 						},
 						"MainRunId": {
-							"value": "@variables('runidmst')",
+							"value": "@pipeline().RunId",
 							"type": "Expression"
 						}
 					}
@@ -57,12 +51,6 @@
 				"dependsOn": [
 					{
 						"activity": "SV_Mastertime",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "SV_MasterRunId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -81,34 +69,15 @@
 							"type": "Expression"
 						},
 						"MaiinRunId": {
-							"value": "@variables('runidmst')",
+							"value": "@pipeline().RunId",
 							"type": "Expression"
 						}
-					}
-				}
-			},
-			{
-				"name": "SV_MasterRunId",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "runidmst",
-					"value": {
-						"value": "@pipeline().RunId",
-						"type": "Expression"
 					}
 				}
 			}
 		],
 		"variables": {
 			"mastertime": {
-				"type": "String"
-			},
-			"runidmst": {
-				"type": "String"
-			},
-			"syntax": {
 				"type": "String"
 			}
 		},
