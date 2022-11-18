@@ -262,7 +262,7 @@
 									},
 									"Message": {
 										"value": {
-											"value": "@if(equals(activity('Script1').output.pipelineReturnValue.status,'Succeeded'),'Success',activity('Script1').output.errors.message)",
+											"value": "@if(equals(activity('Script1').status,'Succeeded'),'Success',activity('Script1').Error)",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -329,7 +329,7 @@
 									},
 									"Status": {
 										"value": {
-											"value": "@activity('Script1').output.status",
+											"value": "@activity('Script1').status",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -426,6 +426,9 @@
 				"type": "String"
 			},
 			"syntax": {
+				"type": "String"
+			},
+			"fsahgci": {
 				"type": "String"
 			}
 		},
