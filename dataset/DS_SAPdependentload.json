@@ -1,0 +1,73 @@
+{
+	"name": "DS_SAPdependentload",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_dependentdelta",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Schema": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "SAPdependentDelta"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "SourceTableName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TableType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DeltaType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PKcolumn",
+				"type": "nvarchar"
+			},
+			{
+				"name": "StagingSchema",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DeltaCondition",
+				"type": "varchar"
+			},
+			{
+				"name": "LastModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "SinkSchema",
+				"type": "varchar"
+			},
+			{
+				"name": "Flag",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().Schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
