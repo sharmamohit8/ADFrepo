@@ -1,0 +1,18 @@
+{
+	"name": "LS_dependentdelta",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "this lS is for the SAPdependent database",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=MOHIT_SHARMA\\SQLEXPRESS;initial catalog=SAPdependent",
+			"userName": "MOHIT_SHARMA\\mohit",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhMDY0ZmZmMy1iYTc1LTQxODQtYTk2YS04NDZmYzE1MzNmYjEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfhHosted-IR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
