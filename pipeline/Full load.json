@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderQuery": "select * from SAPlookup where LoadType = 'Full'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -324,7 +325,7 @@
 									},
 									"Message": {
 										"value": {
-											"value": "@if(equals(activity('CD_Srctostg').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_Srctostg').output.errors[0].message)",
+											"value": "@if(equals(activity('CD_stgtodbo').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_stgtodbo').output.errors[0].message)",
 											"type": "Expression"
 										},
 										"type": "String"
