@@ -23,7 +23,11 @@
 					},
 					"dataset": {
 						"referenceName": "DS_SAPdependentload",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "dbo",
+							"TableName": "SAP_lookup"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -42,13 +46,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LK_SAPtransactionalTbls').output.value",
+						"value": "@activity('LK_SAPDeltaTbls').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "CD_DeltaTables",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -62,12 +66,22 @@
 							"typeProperties": {
 								"source": {
 									"type": "SapTableSource",
+									"rfcTableOptions": {
+										"value": "@{item().DeltaCondition}",
+										"type": "Expression"
+									},
+									"customRfcReadTableFunctionModule": "",
 									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "SqlServerSink",
+									"preCopyScript": {
+										"value": "@{concat('IF OBJECT_ID(','''',item().StagingSchema,'.',item().SinkTableName,'''',') IS NOT NULL\nTRUNCATE TABLE ',item().StagingSchema,'.',item().SinkTableName)}",
+										"type": "Expression"
+									},
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate"
 								},
 								"enableStaging": false,
 								"translator": {
@@ -113,7 +127,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "CD_DeltaTables",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -128,7 +142,30 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[loadtypedelta]"
+								"storedProcedureName": "[dbo].[loadtypedelta]",
+								"storedProcedureParameters": {
+									"PipelineTime": {
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"SinkSchema": {
+										"value": {
+											"value": "@item().SinkSchema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SourceTableName": {
+										"value": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
@@ -155,7 +192,208 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[SP_SAPauditlog]"
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]",
+								"storedProcedureParameters": {
+									"CopyDuration": {
+										"value": {
+											"value": "@activity('CD_DeltaTables').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Error": {
+										"value": {
+											"value": "@if(equals(activity('SP_DeltaLoad').Status,'Succeeded'),'Success',activity('SP_DeltaLoad').Error)",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionTime": {
+										"value": {
+											"value": "@activity('SP_DeltaLoad').ExecutionEndTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": null,
+										"type": "Int64"
+									},
+									"RowsRead": {
+										"value": null,
+										"type": "Int64"
+									},
+									"SourceName": {
+										"value": {
+											"value": "@item().SourceName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('SP_DeltaLoad').Status",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableName": {
+										"value": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetSchemaName": {
+										"value": {
+											"value": "@item().SinkSchema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetTableName": {
+										"value": {
+											"value": "@item().SinkTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_dependentdelta",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Stored procedure1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "CD_DeltaTables",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]",
+								"storedProcedureParameters": {
+									"CopyDuration": {
+										"value": {
+											"value": "@activity('CD_DeltaTables').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Error": {
+										"value": {
+											"value": "@if(equals(activity('CD_DeltaTables').output.executionDetails[0].status,'Succeeded'),'Success',activity('CD_DeltaTables').output.errors[0].message)",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionTime": {
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": null,
+										"type": "Int32"
+									},
+									"RowsRead": {
+										"value": null,
+										"type": "Int32"
+									},
+									"SourceName": {
+										"value": {
+											"value": "@activity('CD_DeltaTables').output.executionDetails[0].source.type",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('CD_DeltaTables').output.executionDetails[0].status",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableName": {
+										"value": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetSchemaName": {
+										"value": {
+											"value": "@item().StagingSchema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetTableName": {
+										"value": {
+											"value": "@item().SinkTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
@@ -193,7 +431,11 @@
 					},
 					"dataset": {
 						"referenceName": "DS_SAPdependentload",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "dbo",
+							"TableName": "SAP_lookup"
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -233,7 +475,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "@{concat('SELECT CONCAT(','''',item().PKcolumn,' IN (','''',',','''''''''',',','(SELECT STRING_AGG(CONVERT(NVARCHAR(max)',',',item().PKcolumn,')',',',''''''',''''''',') FROM ',item().StagingSchemaName,'.',item().DependentOn,')',',','''''''''',',',''')'')',' AS String')}\n",
+										"value": "@{concat('SELECT CONCAT(','''',item().PKcolumn,' IN (','''',',','''''''''',',','(SELECT STRING_AGG(CONVERT(NVARCHAR(max)',',',item().PKcolumn,')',',',''''''',''''''',') FROM ',item().StagingSchema,'.',item().DependentOn,')',',','''''''''',',',''')'')',' AS String')}\n",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -241,7 +483,11 @@
 								},
 								"dataset": {
 									"referenceName": "DS_SAPdependentload",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": "dbo",
+										"TableName": "SAP_lookup"
+									}
 								},
 								"firstRowOnly": false
 							}
@@ -279,7 +525,7 @@
 								"sink": {
 									"type": "SqlServerSink",
 									"preCopyScript": {
-										"value": "@{concat('IF OBJECT_ID(','''',item().SinkSchemaName,'.',item().SinkTableName,'''',') IS NOT NULL\nTRUNCATE TABLE ',item().SinkSchemaName,'.',item().SinkTableName)}",
+										"value": "@{concat('IF OBJECT_ID(','''',item().StagingSchema,'.',item().SinkTableName,'''',') IS NOT NULL\nTRUNCATE TABLE ',item().StagingSchema,'.',item().SinkTableName)}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
@@ -314,11 +560,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Schema": {
-											"value": "@item().StagingSchemaName",
+											"value": "@item().StagingSchema",
 											"type": "Expression"
 										},
 										"TableName": {
-											"value": "@item().TableName",
+											"value": "@item().SinkTableName",
 											"type": "Expression"
 										}
 									}
@@ -344,6 +590,9 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_dependentdelta]"
+							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
 								"type": "LinkedServiceReference"
@@ -369,7 +618,175 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[SP_SAPauditlog]"
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]",
+								"storedProcedureParameters": {
+									"CopyDuration": {
+										"value": {
+											"value": "@activity('CD_SRCtoSTGdependent').output.copyDuration",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"Error": {
+										"value": {
+											"value": "@if(equals(activity('SP_DependentDelta').Status,'Succeeded'),'Success',activity('SP_DependentDelta').Error)",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"ExecutionTime": {
+										"value": {
+											"value": "@activity('SP_DependentDelta').ExecutionEndTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"PipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": {
+											"value": "@pipeline().TriggerTime",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": null,
+										"type": "Int32"
+									},
+									"RowsRead": {
+										"value": null,
+										"type": "Int32"
+									},
+									"SourceName": {
+										"value": {
+											"value": "@item().SourceName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"Status": {
+										"value": {
+											"value": "@activity('SP_DependentDelta').Status",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableName": {
+										"value": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetSchemaName": {
+										"value": {
+											"value": "@item().SinkSchema",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TargetTableName": {
+										"value": {
+											"value": "@item().SinkTableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_dependentdelta",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "SP_stgAuditlog",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "CD_SRCtoSTGdependent",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]",
+								"storedProcedureParameters": {
+									"CopyDuration": {
+										"value": "",
+										"type": "Int32"
+									},
+									"Error": {
+										"value": "",
+										"type": "String"
+									},
+									"ExecutionTime": {
+										"value": "",
+										"type": "DateTime"
+									},
+									"PipelineName": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineRunId": {
+										"value": "",
+										"type": "String"
+									},
+									"PipelineTriggerTime": {
+										"value": "",
+										"type": "DateTime"
+									},
+									"RowsCopied": {
+										"value": "",
+										"type": "Int32"
+									},
+									"RowsRead": {
+										"value": "",
+										"type": "Int32"
+									},
+									"SourceName": {
+										"value": "",
+										"type": "String"
+									},
+									"Status": {
+										"value": "",
+										"type": "String"
+									},
+									"TableName": {
+										"value": "",
+										"type": "String"
+									},
+									"TargetSchemaName": {
+										"value": "",
+										"type": "String"
+									},
+									"TargetTableName": {
+										"value": "",
+										"type": "String"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
@@ -380,6 +797,11 @@
 				}
 			}
 		],
+		"variables": {
+			"abc": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "DEPENDENT DELTA"
 		},

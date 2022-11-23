@@ -1,0 +1,62 @@
+{
+	"name": "pipeline6",
+	"properties": {
+		"activities": [
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[uspLogError]",
+					"storedProcedureParameters": {
+						"ErrorLogID": {
+							"value": "",
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "linkedservicefordb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "abc",
+					"value": {
+						"value": "@activity('Stored procedure1').abc\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"abc": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "DEPENDENT DELTA"
+		},
+		"annotations": []
+	}
+}
