@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LK_SAPtransactionalTbls",
+				"name": "LK_SAPDeltaTbls",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,6 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT * FROM SAP_lookup WHERE LoadType = 'Delta'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -28,11 +29,11 @@
 				}
 			},
 			{
-				"name": "FE_alltables",
+				"name": "FE_DeltaTables",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LK_SAPtransactionalTbls",
+						"activity": "LK_SAPDeltaTbls",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -108,7 +109,7 @@
 							]
 						},
 						{
-							"name": "Stored procedure1",
+							"name": "SP_DeltaLoad",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
@@ -132,11 +133,11 @@
 							}
 						},
 						{
-							"name": "Stored procedure2",
+							"name": "SP_Delta_AuditLog",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Stored procedure1",
+									"activity": "SP_DeltaLoad",
 									"dependencyConditions": [
 										"Completed"
 									]
@@ -149,17 +150,21 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "LS_dependentdelta",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "LK_DependentTbls",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "FE_alltables",
+						"activity": "FE_DeltaTables",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -172,14 +177,27 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT * FROM SAP_lookup WHERE LoadType = 'Dependent Delta'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_SAPdependentload",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "FE_DependentDeltaLoad",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "LK_DependentTbls",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -187,9 +205,14 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('LK_DependentTbls').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
 					"activities": [
 						{
-							"name": "Lookup2",
+							"name": "LK_DependentDeltaCondition",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -202,11 +225,11 @@
 							"userProperties": []
 						},
 						{
-							"name": "Copy data2",
+							"name": "CD_SRCtoSTGdependent",
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Lookup2",
+									"activity": "LK_DependentDeltaCondition",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -225,11 +248,11 @@
 							}
 						},
 						{
-							"name": "Stored procedure3",
+							"name": "SP_DependentDelta",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Copy data2",
+									"activity": "CD_SRCtoSTGdependent",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -245,11 +268,11 @@
 							"userProperties": []
 						},
 						{
-							"name": "Stored procedure4",
+							"name": "SP_DependentDelta_AuditLog",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Stored procedure3",
+									"activity": "SP_DependentDelta",
 									"dependencyConditions": [
 										"Completed"
 									]
