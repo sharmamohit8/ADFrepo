@@ -127,6 +127,9 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[loadtypedelta]"
+							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
 								"type": "LinkedServiceReference"
@@ -151,6 +154,9 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]"
+							},
 							"linkedServiceName": {
 								"referenceName": "LS_dependentdelta",
 								"type": "LinkedServiceReference"
@@ -222,7 +228,23 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@{concat('SELECT CONCAT(','''',item().PKcolumn,' IN (','''',',','''''''''',',','(SELECT STRING_AGG(CONVERT(NVARCHAR(max)',',',item().PKcolumn,')',',',''''''',''''''',') FROM ',item().StagingSchemaName,'.',item().DependentOn,')',',','''''''''',',',''')'')',' AS String')}\n",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "DS_SAPdependentload",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
 						},
 						{
 							"name": "CD_SRCtoSTGdependent",
@@ -244,8 +266,64 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"enableStaging": false
-							}
+								"source": {
+									"type": "SapTableSource",
+									"rfcTableOptions": {
+										"value": "@{activity('LK_DependentDeltaCondition').output.value[0].String}",
+										"type": "Expression"
+									},
+									"customRfcReadTableFunctionModule": "",
+									"rfcTableFields": "",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"preCopyScript": {
+										"value": "@{concat('IF OBJECT_ID(','''',item().SinkSchemaName,'.',item().SinkTableName,'''',') IS NOT NULL\nTRUNCATE TABLE ',item().SinkSchemaName,'.',item().SinkTableName)}",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_SAPtblsrc",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SAPfetchndsink",
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema": {
+											"value": "@item().StagingSchemaName",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						},
 						{
 							"name": "SP_DependentDelta",
@@ -265,7 +343,11 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "LS_dependentdelta",
+								"type": "LinkedServiceReference"
+							}
 						},
 						{
 							"name": "SP_DependentDelta_AuditLog",
@@ -285,7 +367,14 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SP_SAPauditlog]"
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_dependentdelta",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
