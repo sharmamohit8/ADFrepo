@@ -546,7 +546,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "SAPfetchndsink",
+									"referenceName": "DS_SAPdependentload",
 									"type": "DatasetReference",
 									"parameters": {
 										"Schema": {
@@ -554,7 +554,7 @@
 											"type": "Expression"
 										},
 										"TableName": {
-											"value": "@item().SinkTableName",
+											"value": "@item().SinkTabeName",
 											"type": "Expression"
 										}
 									}
