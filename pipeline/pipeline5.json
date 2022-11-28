@@ -1,0 +1,53 @@
+{
+	"name": "pipeline5",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "fsil",
+					"value": {
+						"value": "@activity('Stored procedure1').Duration",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[auditlog]"
+				},
+				"linkedServiceName": {
+					"referenceName": "Linkedservice_SqlServer",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"variables": {
+			"fsil": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

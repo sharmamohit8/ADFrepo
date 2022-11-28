@@ -188,7 +188,7 @@
 								"storedProcedureName": "[dbo].[SP_SAPauditlog]",
 								"storedProcedureParameters": {
 									"CopyDuration": {
-										"value": null,
+										"value": "",
 										"type": "Int32"
 									},
 									"Error": {
@@ -840,6 +840,9 @@
 		],
 		"variables": {
 			"abc": {
+				"type": "String"
+			},
+			"fsil": {
 				"type": "String"
 			}
 		},
