@@ -779,11 +779,17 @@
 										"type": "DateTime"
 									},
 									"RowsCopied": {
-										"value": null,
+										"value": {
+											"value": "@activity('CD_DependentTables').output.rowsCopied",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"RowsRead": {
-										"value": null,
+										"value": {
+											"value": "@activity('CD_DependentTables').output.rowsRead",
+											"type": "Expression"
+										},
 										"type": "Int32"
 									},
 									"SourceName": {
